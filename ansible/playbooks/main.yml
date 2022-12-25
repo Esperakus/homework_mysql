@@ -1,0 +1,9 @@
+---
+
+- hosts: all
+  roles:
+    - { role: general-el8, become: true }
+
+- hosts: mysql_nodes
+  roles:
+   - { role: mysqld, become: true }
