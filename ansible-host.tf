@@ -6,7 +6,6 @@ resource "yandex_compute_instance" "ansible" {
   resources {
     cores  = 2
     memory = 2
-    # core_fraction = 20
   }
 
   boot_disk {
@@ -21,7 +20,6 @@ resource "yandex_compute_instance" "ansible" {
   }
 
   metadata = {
-    #    ssh-keys = "cloud-user:${file("~/.ssh/id_rsa.pub")}"
     ssh-keys = "cloud-user:${tls_private_key.ssh.public_key_openssh}"
   }
 
@@ -44,13 +42,11 @@ resource "yandex_compute_instance" "ansible" {
   provisioner "file" {
     source      = "ansible"
     destination = "/home/cloud-user"
-
   }
 
   provisioner "file" {
     source      = "id_rsa"
     destination = "/home/cloud-user/.ssh/id_rsa"
-
   }
 
   provisioner "file" {
@@ -58,28 +54,15 @@ resource "yandex_compute_instance" "ansible" {
     destination = "/home/cloud-user/.ssh/id_rsa.pub"
   }
 
-  # provisioner "file" {
-  #   source      = "id_rsa"
-  #   destination = "/home/cloud-user/ansible/roles/pacemaker/files/id_rsa"
-
-  # }
-
-  # provisioner "file" {
-  #   source      = "id_rsa.pub"
-  #   destination = "/home/cloud-user/ansible/roles/pacemaker/files/id_rsa.pub"
-  # }
-
   provisioner "remote-exec" {
     inline = [
       "chmod 600 /home/cloud-user/.ssh/id_rsa"
     ]
-
   }
 
   provisioner "file" {
     source      = "./ansible/ansible.cfg"
     destination = "/home/cloud-user/ansible.cfg"
-
   }
 
   provisioner "remote-exec" {
@@ -90,6 +73,5 @@ resource "yandex_compute_instance" "ansible" {
 
   depends_on = [
     yandex_compute_instance.mysql,
-    # yandex_compute_instance.iscsi,
   ]
 }

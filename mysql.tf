@@ -7,7 +7,6 @@ resource "yandex_compute_instance" "mysql" {
   resources {
     cores  = 2
     memory = 2
-    # core_fraction = 20
   }
 
   boot_disk {
@@ -18,11 +17,9 @@ resource "yandex_compute_instance" "mysql" {
 
   network_interface {
     subnet_id = yandex_vpc_subnet.subnet01.id
-    # nat       = true
   }
 
   metadata = {
     ssh-keys = "cloud-user:${tls_private_key.ssh.public_key_openssh}"
   }
-
 }
