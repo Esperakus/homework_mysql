@@ -7,3 +7,41 @@
 - hosts: mysql_nodes
   roles:
    - { role: mysqld, become: true }
+
+- hosts: mysql_nodes[0]
+  become: true
+  tasks:
+    - name: start bootstrap on first node
+      systemd:
+        name: mysql@bootstrap
+        state: started
+
+- hosts: mysql_nodes[1:]
+  become: true
+  tasks:
+    - name: start mysql on another nodes
+      systemd:
+        name: mysql
+        state: started
+
+- hosts: mysql_nodes[0]
+  become: true
+  tasks:
+    - name: create db
+      mysql_db:
+        name: test
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+
+- hosts: mysql_nodes[0]
+  become: true
+  tasks:
+    - name: create db
+      mysql_user:
+        name: db_user
+        state: present
+        password: db_user_pwd
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+        priv: 'test.*:ALL'

@@ -1,6 +1,6 @@
 [mysql_nodes]
-%{ for hostname in mysql_nodes_hostname ~}
-${hostname}
+%{ for ip in mysql_nodes_hostname ~}
+${ip}
 %{ endfor ~}
 
 

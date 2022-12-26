@@ -42,7 +42,7 @@ resource "local_file" "hosts" {
     {
       # gfs_workers   = yandex_compute_instance.gfs.*.network_interface.0.ip_address
       # iscsi_workers = yandex_compute_instance.iscsi.*.network_interface.0.ip_address
-      mysql_nodes_hostname = yandex_compute_instance.mysql.*.hostname
+      mysql_nodes_hostname = yandex_compute_instance.mysql.*.network_interface.0.ip_address
       # iscsi_worker_hostname = yandex_compute_instance.iscsi.*.hostname
       # db_workers      = yandex_compute_instance.db.*.network_interface.0.ip_address
   })

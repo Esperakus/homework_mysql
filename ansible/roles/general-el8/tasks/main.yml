@@ -67,3 +67,5 @@
 
   - name: disable selinux
     command: setenforce 0
+
+  
